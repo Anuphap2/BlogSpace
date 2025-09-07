@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { getSupabaseClient } from '@/lib/supabaseClient';
 
 export async function GET() {
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from('posts')
     .select('*')
@@ -16,6 +17,7 @@ export async function GET() {
 }
 
 export async function POST(request) {
+  const supabase = getSupabaseClient();
   const body = await request.json();
   const { title, excerpt, content, author, image, category, tags, read_time } = body;
 
