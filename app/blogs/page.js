@@ -3,134 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FiSearch, FiFilter, FiEye, FiHeart, FiMessageCircle, FiCalendar, FiArrowLeft, FiEdit3 } from "react-icons/fi";
 
-const allPosts = [
-  {
-    id: 1,
-    title: "5 วิธีเริ่มต้นเขียนบล็อกสำหรับมือใหม่",
-    excerpt: "เคล็ดลับง่ายๆ สำหรับผู้ที่อยากเริ่มต้นสร้างบล็อกของตัวเอง ตั้งแต่การเลือกแพลตฟอร์มไปจนถึงการเขียนเนื้อหาที่น่าสนใจ",
-    author: "สมชาย ใจดี",
-    date: "10 มิ.ย. 2024",
-    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
-    category: "การเขียน",
-    readTime: "5 นาที",
-    views: 1250,
-    likes: 89,
-    comments: 23,
-    tags: ["บล็อก", "มือใหม่", "การเขียน"]
-  },
-  {
-    id: 2,
-    title: "แรงบันดาลใจจากธรรมชาติรอบตัว",
-    excerpt: "ธรรมชาติรอบตัวสามารถเป็นแรงบันดาลใจให้กับงานเขียนของคุณได้อย่างไร มาดูเทคนิคการสังเกตและนำมาประยุกต์ใช้",
-    author: "สายฝน พราวแสง",
-    date: "8 มิ.ย. 2024",
-    image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80",
-    category: "แรงบันดาลใจ",
-    readTime: "7 นาที",
-    views: 980,
-    likes: 67,
-    comments: 15,
-    tags: ["ธรรมชาติ", "แรงบันดาลใจ", "การเขียน"]
-  },
-  {
-    id: 3,
-    title: "เทคนิคถ่ายภาพสำหรับบล็อกเกอร์",
-    excerpt: "แชร์เทคนิคถ่ายภาพให้สวยโดดเด่นสำหรับนำไปใช้ในบล็อกของคุณ รวมถึงการจัดแสงและการจัดองค์ประกอบ",
-    author: "อนันต์ ถ่ายภาพ",
-    date: "5 มิ.ย. 2024",
-    image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80",
-    category: "การถ่ายภาพ",
-    readTime: "8 นาที",
-    views: 2100,
-    likes: 156,
-    comments: 42,
-    tags: ["การถ่ายภาพ", "บล็อก", "เทคนิค"]
-  },
-  {
-    id: 4,
-    title: "การสร้างแบรนด์ส่วนตัวผ่านบล็อก",
-    excerpt: "เรียนรู้วิธีการสร้างแบรนด์ส่วนตัวที่แข็งแกร่งผ่านการเขียนบล็อก และการสร้างความน่าเชื่อถือในสายงาน",
-    author: "ธนาคาร แบรนด์",
-    date: "3 มิ.ย. 2024",
-    image: "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=600&q=80",
-    category: "การตลาด",
-    readTime: "6 นาที",
-    views: 1800,
-    likes: 134,
-    comments: 28,
-    tags: ["แบรนด์", "การตลาด", "ธุรกิจ"]
-  },
-  {
-    id: 5,
-    title: "SEO สำหรับบล็อกเกอร์มือใหม่",
-    excerpt: "เทคนิค SEO พื้นฐานที่บล็อกเกอร์มือใหม่ควรรู้ เพื่อให้บล็อกของคุณถูกค้นเจอใน Google มากขึ้น",
-    author: "ดิจิทัล มาร์เก็ตติ้ง",
-    date: "1 มิ.ย. 2024",
-    image: "https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?auto=format&fit=crop&w=600&q=80",
-    category: "SEO",
-    readTime: "10 นาที",
-    views: 3200,
-    likes: 245,
-    comments: 67,
-    tags: ["SEO", "Google", "การตลาด"]
-  },
-  {
-    id: 6,
-    title: "การจัดการเวลาในการเขียนบล็อก",
-    excerpt: "เคล็ดลับการจัดการเวลาที่มีประสิทธิภาพสำหรับการเขียนบล็อก รวมถึงการสร้างตารางงานที่เหมาะสม",
-    author: "เวลา จัดการ",
-    date: "29 พ.ค. 2024",
-    image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?auto=format&fit=crop&w=600&q=80",
-    category: "การจัดการ",
-    readTime: "4 นาที",
-    views: 1450,
-    likes: 98,
-    comments: 19,
-    tags: ["การจัดการเวลา", "ประสิทธิภาพ", "การทำงาน"]
-  },
-  {
-    id: 7,
-    title: "การเลือกหัวข้อบล็อกที่น่าสนใจ",
-    excerpt: "วิธีการเลือกหัวข้อบล็อกที่ผู้อ่านสนใจ และเทคนิคการสร้างเนื้อหาที่มีคุณค่าและน่าอ่าน",
-    author: "เนื้อหา สร้างสรรค์",
-    date: "27 พ.ค. 2024",
-    image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=600&q=80",
-    category: "การเขียน",
-    readTime: "6 นาที",
-    views: 1900,
-    likes: 142,
-    comments: 35,
-    tags: ["หัวข้อ", "เนื้อหา", "การเขียน"]
-  },
-  {
-    id: 8,
-    title: "การสร้างชุมชนผู้อ่านบล็อก",
-    excerpt: "เทคนิคการสร้างและรักษาชุมชนผู้อ่านบล็อกให้แข็งแกร่ง รวมถึงการสร้างการมีส่วนร่วม",
-    author: "ชุมชน สร้างสรรค์",
-    date: "25 พ.ค. 2024",
-    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80",
-    category: "ชุมชน",
-    readTime: "7 นาที",
-    views: 1650,
-    likes: 118,
-    comments: 41,
-    tags: ["ชุมชน", "ผู้อ่าน", "การมีส่วนร่วม"]
-  },
-  {
-    id: 9,
-    title: "การวิเคราะห์ข้อมูลบล็อก",
-    excerpt: "เรียนรู้วิธีการวิเคราะห์ข้อมูลบล็อกเพื่อปรับปรุงเนื้อหาและเพิ่มจำนวนผู้อ่าน",
-    author: "ข้อมูล วิเคราะห์",
-    date: "23 พ.ค. 2024",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80",
-    category: "การวิเคราะห์",
-    readTime: "8 นาที",
-    views: 2200,
-    likes: 167,
-    comments: 29,
-    tags: ["การวิเคราะห์", "ข้อมูล", "สถิติ"]
-  }
-];
+// ใช้เฉพาะข้อมูลจริงจาก API เท่านั้น ไม่มี mock data
 
 const categories = ["ทั้งหมด", "การเขียน", "แรงบันดาลใจ", "การถ่ายภาพ", "การตลาด", "SEO", "การจัดการ", "ชุมชน", "การวิเคราะห์"];
 
@@ -139,22 +12,28 @@ export default function BlogsPage() {
   const [selectedCategory, setSelectedCategory] = useState("ทั้งหมด");
   const [sortBy, setSortBy] = useState("ล่าสุด");
   
-  // โหลดบล็อกที่ผู้ใช้สร้าง
-  const [userBlogs, setUserBlogs] = useState([]);
-  
-  // รวมบล็อกทั้งหมด
-  const allBlogs = [...allPosts, ...userBlogs];
+  const [remotePosts, setRemotePosts] = useState([]);
 
-  // โหลดข้อมูลจาก localStorage เมื่อ component mount
+  // โหลดข้อมูลจาก API (Supabase)
   useEffect(() => {
-    const savedBlogs = JSON.parse(localStorage.getItem("userBlogs") || "[]");
-    setUserBlogs(savedBlogs);
+    (async () => {
+      try {
+        const res = await fetch('/api/posts');
+        const json = await res.json();
+        if (res.ok) {
+          setRemotePosts(json.posts || []);
+        }
+      } catch {}
+    })();
   }, []);
 
-  const filteredPosts = allBlogs.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         post.author.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredPosts = remotePosts.filter(post => {
+    const title = (post.title || '').toLowerCase();
+    const excerpt = (post.excerpt || '').toLowerCase();
+    const author = (post.author || '').toLowerCase();
+    const matchesSearch = title.includes(searchTerm.toLowerCase()) ||
+                         excerpt.includes(searchTerm.toLowerCase()) ||
+                         author.includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === "ทั้งหมด" || post.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -162,7 +41,7 @@ export default function BlogsPage() {
   const sortedPosts = [...filteredPosts].sort((a, b) => {
     switch (sortBy) {
       case "ล่าสุด":
-        return new Date(b.date) - new Date(a.date);
+        return new Date(b.created_at || 0) - new Date(a.created_at || 0);
       case "ยอดนิยม":
         return b.views - a.views;
       case "ยอดไลค์":
@@ -256,13 +135,13 @@ export default function BlogsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {sortedPosts.map((post, index) => (
             <article
-              key={post.id}
+              key={`${post.id ?? 'seed'}-${index}`}
               className="group bg-white rounded-3xl shadow-apple hover:shadow-apple-lg transition-smooth overflow-hidden border border-gray-100 hover:border-gray-200 animate-fade-in-up"
               style={{animationDelay: `${index * 0.05}s`}}
             >
               <div className="relative overflow-hidden">
                 <img
-                  src={post.image}
+                  src={post.image || "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"}
                   alt={post.title}
                   className="h-48 w-full object-cover transition-smooth group-hover:scale-110"
                   loading="lazy"
@@ -274,7 +153,7 @@ export default function BlogsPage() {
                 </div>
                 <div className="absolute top-4 right-4">
                   <span className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-medium text-gray-700 shadow-apple">
-                    {post.readTime}
+                    {post.read_time || ''}
                   </span>
                 </div>
               </div>
@@ -282,7 +161,7 @@ export default function BlogsPage() {
               <div className="p-6">
                 <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
                   <FiCalendar className="text-xs" />
-                  <span>{post.date}</span>
+                  <span>{post.created_at ? new Date(post.created_at).toLocaleDateString('th-TH') : ''}</span>
                 </div>
 
                 <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-gray-700 transition-smooth">
@@ -297,7 +176,7 @@ export default function BlogsPage() {
 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {post.tags.slice(0, 3).map((tag, tagIndex) => (
+                  {(post.tags || []).slice(0, 3).map((tag, tagIndex) => (
                     <span
                       key={tagIndex}
                       className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full"
@@ -310,9 +189,9 @@ export default function BlogsPage() {
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-700 font-bold text-sm">
-                      {post.author[0]}
+                      {(post.author || '?')[0]}
                     </div>
-                    <span className="text-sm text-gray-600">{post.author}</span>
+                    <span className="text-sm text-gray-600">{post.author || ''}</span>
                   </div>
                 </div>
 
@@ -320,15 +199,15 @@ export default function BlogsPage() {
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-1">
                       <FiEye className="text-xs" />
-                      <span>{post.views.toLocaleString()}</span>
+                      <span>{(post.views ?? 0).toLocaleString()}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <FiHeart className="text-xs" />
-                      <span>{post.likes}</span>
+                      <span>{post.likes ?? 0}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <FiMessageCircle className="text-xs" />
-                      <span>{post.comments}</span>
+                      <span>{post.comments_count ?? 0}</span>
                     </div>
                   </div>
                 </div>

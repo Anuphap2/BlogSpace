@@ -169,43 +169,33 @@ export default function WritePage() {
     setIsPublishing(publish);
     setIsDraft(!publish);
 
-    // สร้างข้อมูลบล็อกใหม่
-    const newBlog = {
-      id: Date.now(),
-      title,
-      excerpt: excerpt || content.substring(0, 150) + "...",
-      content,
-      author,
-      date: new Date().toLocaleDateString("th-TH", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      }),
-      image: featuredImage || "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
-      category: category || "ทั่วไป",
-      readTime: Math.ceil(content.length / 500) + " นาที",
-      views: 0,
-      likes: 0,
-      comments: 0,
-      tags: tags.split(",").map(tag => tag.trim()).filter(tag => tag),
-      status: publish ? "published" : "draft"
-    };
+    try {
+      const res = await fetch('/api/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title,
+          excerpt: excerpt || (content ? content.replace(/<[^>]+>/g, '').slice(0, 150) + '...' : ''),
+          content,
+          author,
+          image: featuredImage || 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80',
+          category: category || 'ทั่วไป',
+          tags: tags.split(',').map(t => t.trim()).filter(Boolean),
+          read_time: Math.ceil((content || '').replace(/<[^>]+>/g, '').length / 500) + ' นาที',
+          status: publish ? 'published' : 'draft',
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'บันทึกไม่สำเร็จ');
 
-    // บันทึกข้อมูล (ในที่นี้จะเก็บใน localStorage)
-    const existingBlogs = JSON.parse(localStorage.getItem("userBlogs") || "[]");
-    existingBlogs.unshift(newBlog);
-    localStorage.setItem("userBlogs", JSON.stringify(existingBlogs));
-
-    // แสดงข้อความสำเร็จ
-    if (publish) {
-      alert("เผยแพร่บล็อกเรียบร้อยแล้ว!");
-      router.push("/blogs");
-    } else {
-      alert("บันทึกแบบร่างเรียบร้อยแล้ว!");
+      alert(publish ? 'เผยแพร่บล็อกเรียบร้อยแล้ว!' : 'บันทึกแบบร่างเรียบร้อยแล้ว!');
+      router.push('/blogs');
+    } catch (e) {
+      alert(e.message);
+    } finally {
+      setIsPublishing(false);
+      setIsDraft(false);
     }
-
-    setIsPublishing(false);
-    setIsDraft(false);
   };
 
   const handleImageUpload = (e) => {

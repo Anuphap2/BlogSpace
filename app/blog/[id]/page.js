@@ -3,74 +3,7 @@ import { useState, use, useEffect } from "react";
 import Link from "next/link";
 import { FiArrowLeft, FiCalendar, FiUser, FiEye, FiHeart, FiMessageCircle, FiShare2, FiBookmark, FiTag } from "react-icons/fi";
 
-const blogData = {
-  1: {
-    id: 1,
-    title: "5 วิธีเริ่มต้นเขียนบล็อกสำหรับมือใหม่",
-    content: `
-      <p>การเขียนบล็อกเป็นวิธีที่ดีในการแบ่งปันความรู้และประสบการณ์ของคุณกับผู้อื่น แต่สำหรับมือใหม่แล้ว การเริ่มต้นอาจดูเหมือนเป็นเรื่องยาก วันนี้เราจะมาแนะนำ 5 วิธีง่ายๆ ที่จะช่วยให้คุณเริ่มต้นเขียนบล็อกได้อย่างมีประสิทธิภาพ</p>
-
-      <h2>1. เลือกแพลตฟอร์มที่เหมาะสม</h2>
-      <p>การเลือกแพลตฟอร์มเป็นสิ่งสำคัญมาก เพราะจะส่งผลต่อการใช้งานในระยะยาว แพลตฟอร์มยอดนิยมที่แนะนำ ได้แก่:</p>
-      <ul>
-        <li><strong>WordPress:</strong> มีความยืดหยุ่นสูง เหมาะสำหรับผู้ที่ต้องการควบคุมทุกอย่าง</li>
-        <li><strong>Blogger:</strong> ใช้งานง่าย เหมาะสำหรับมือใหม่</li>
-        <li><strong>Medium:</strong> มีชุมชนผู้อ่านที่แข็งแกร่ง</li>
-        <li><strong>BlogSpace:</strong> แพลตฟอร์มใหม่ที่ออกแบบมาเพื่อความสวยงามและใช้งานง่าย</li>
-      </ul>
-
-      <h2>2. กำหนดหัวข้อและเป้าหมาย</h2>
-      <p>ก่อนเริ่มเขียน ควรกำหนดให้ชัดเจนว่าคุณต้องการเขียนเกี่ยวกับอะไร และมีเป้าหมายอย่างไร เช่น:</p>
-      <ul>
-        <li>แบ่งปันความรู้ในสาขาที่คุณเชี่ยวชาญ</li>
-        <li>สร้างแบรนด์ส่วนตัว</li>
-        <li>สร้างรายได้เสริม</li>
-        <li>สร้างชุมชนผู้อ่าน</li>
-      </ul>
-
-      <h2>3. วางแผนเนื้อหา</h2>
-      <p>การวางแผนเนื้อหาจะช่วยให้คุณเขียนบล็อกได้อย่างต่อเนื่องและมีคุณภาพ ควรสร้าง:</p>
-      <ul>
-        <li><strong>Editorial Calendar:</strong> ตารางการเผยแพร่เนื้อหา</li>
-        <li><strong>Content Pillars:</strong> เสาหลักของเนื้อหา เช่น เทคนิค, แรงบันดาลใจ, ข่าวสาร</li>
-        <li><strong>Keyword Research:</strong> วิจัยคำค้นหาที่เกี่ยวข้อง</li>
-      </ul>
-
-      <h2>4. เขียนเนื้อหาที่มีคุณค่า</h2>
-      <p>เนื้อหาที่ดีควรมีคุณสมบัติดังนี้:</p>
-      <ul>
-        <li><strong>มีประโยชน์:</strong> ให้ข้อมูลหรือความรู้ที่เป็นประโยชน์ต่อผู้อ่าน</li>
-        <li><strong>อ่านง่าย:</strong> ใช้ภาษาที่เข้าใจง่าย มีการจัดรูปแบบที่ชัดเจน</li>
-        <li><strong>มีเอกลักษณ์:</strong> สะท้อนบุคลิกและมุมมองของคุณ</li>
-        <li><strong>อัปเดต:</strong> เนื้อหาที่ทันสมัยและเกี่ยวข้องกับสถานการณ์ปัจจุบัน</li>
-      </ul>
-
-      <h2>5. สร้างการมีส่วนร่วม</h2>
-      <p>การสร้างการมีส่วนร่วมกับผู้อ่านเป็นสิ่งสำคัญที่ช่วยให้บล็อกของคุณเติบโต:</p>
-      <ul>
-        <li>ตอบความคิดเห็นอย่างสม่ำเสมอ</li>
-        <li>สร้างเนื้อหาที่กระตุ้นให้ผู้อ่านแสดงความคิดเห็น</li>
-        <li>ใช้โซเชียลมีเดียในการโปรโมตบล็อก</li>
-        <li>สร้างชุมชนผ่านการจัดกิจกรรมหรือการแข่งขัน</li>
-      </ul>
-
-      <h2>สรุป</h2>
-      <p>การเริ่มต้นเขียนบล็อกไม่ใช่เรื่องยาก หากคุณทำตาม 5 วิธีที่แนะนำข้างต้น จำไว้ว่าการเขียนบล็อกเป็นกระบวนการที่ต้องใช้เวลาและความอดทน เริ่มต้นด้วยการเขียนเนื้อหาที่คุณสนใจและมีความรู้ แล้วค่อยๆ พัฒนาไปเรื่อยๆ</p>
-
-      <p>หากคุณต้องการความช่วยเหลือในการเริ่มต้น BlogSpace พร้อมให้คำแนะนำและเครื่องมือที่จำเป็นสำหรับการสร้างบล็อกที่สวยงามและมีประสิทธิภาพ</p>
-    `,
-    author: "สมชาย ใจดี",
-    date: "10 มิ.ย. 2024",
-    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-    category: "การเขียน",
-    readTime: "5 นาที",
-    views: 1250,
-    likes: 89,
-    comments: 23,
-    tags: ["บล็อก", "มือใหม่", "การเขียน", "เทคนิค", "เริ่มต้น"]
-  }
-};
-
+const blogData = {};
 export default function BlogDetailPage({ params }) {
   const resolvedParams = use(params);
   const [isLiked, setIsLiked] = useState(false);
@@ -82,20 +15,17 @@ export default function BlogDetailPage({ params }) {
   useEffect(() => {
     const blogId = resolvedParams.id;
     
-    // ตรวจสอบในข้อมูลตัวอย่างก่อน
-    if (blogData[blogId]) {
-      setBlog(blogData[blogId]);
-      setLikes(blogData[blogId].likes || 0);
-      return;
-    }
-    
-    // ตรวจสอบใน localStorage
-    const userBlogs = JSON.parse(localStorage.getItem("userBlogs") || "[]");
-    const foundBlog = userBlogs.find(b => b.id == blogId);
-    if (foundBlog) {
-      setBlog(foundBlog);
-      setLikes(foundBlog.likes || 0);
-    }
+    // ดึงจาก API
+    (async () => {
+      try {
+        const res = await fetch(`/api/posts/${blogId}`);
+        const json = await res.json();
+        if (res.ok) {
+          setBlog(json.post);
+          setLikes(json.post?.likes ?? 0);
+        }
+      } catch {}
+    })();
   }, [resolvedParams.id]);
 
   if (!blog) {
@@ -145,7 +75,7 @@ export default function BlogDetailPage({ params }) {
           {/* Featured Image */}
           <div className="relative h-64 md:h-80 overflow-hidden">
             <img
-              src={blog.image}
+              src={blog.image || "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80"}
               alt={blog.title}
               className="w-full h-full object-cover"
             />
@@ -161,18 +91,18 @@ export default function BlogDetailPage({ params }) {
             <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-6">
               <div className="flex items-center gap-2">
                 <FiCalendar className="text-xs" />
-                <span>{blog.date}</span>
+                <span>{blog.created_at ? new Date(blog.created_at).toLocaleDateString('th-TH') : ''}</span>
               </div>
               <div className="flex items-center gap-2">
                 <FiUser className="text-xs" />
-                <span>{blog.author}</span>
+                <span>{blog.author || ''}</span>
               </div>
               <div className="flex items-center gap-2">
                 <FiEye className="text-xs" />
-                <span>{blog.views.toLocaleString()} ครั้ง</span>
+                <span>{(blog.views ?? 0).toLocaleString()} ครั้ง</span>
               </div>
               <div className="flex items-center gap-2">
-                <span>⏱️ {blog.readTime}</span>
+                <span>⏱️ {blog.read_time || ''}</span>
               </div>
             </div>
 
@@ -214,7 +144,7 @@ export default function BlogDetailPage({ params }) {
 
               <div className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-gray-100 text-gray-600">
                 <FiMessageCircle className="text-sm" />
-                <span>{blog.comments} ความคิดเห็น</span>
+                <span>{blog.comments_count ?? 0} ความคิดเห็น</span>
               </div>
             </div>
 
@@ -231,7 +161,7 @@ export default function BlogDetailPage({ params }) {
                 <span className="text-sm font-medium text-gray-700">แท็ก:</span>
               </div>
               <div className="flex flex-wrap gap-2">
-                {blog.tags.map((tag, index) => (
+                {(blog.tags || []).map((tag, index) => (
                   <span
                     key={index}
                     className="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full hover:bg-gray-200 transition-smooth cursor-pointer"
@@ -246,10 +176,10 @@ export default function BlogDetailPage({ params }) {
             <div className="mt-12 pt-8 border-t border-gray-200">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center text-gray-700 font-bold text-xl">
-                  {blog.author[0]}
+                  {(blog.author || '?')[0]}
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900">{blog.author}</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">{blog.author || ''}</h3>
                   <p className="text-gray-600">บล็อกเกอร์และนักเขียนที่มีประสบการณ์มากกว่า 5 ปี</p>
                 </div>
               </div>
