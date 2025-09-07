@@ -185,7 +185,8 @@ export default function WritePage() {
           status: publish ? 'published' : 'draft',
         }),
       });
-      const json = await res.json();
+      const text = await res.text();
+      const json = text ? JSON.parse(text) : {};
       if (!res.ok) throw new Error(json.error || 'บันทึกไม่สำเร็จ');
 
       alert(publish ? 'เผยแพร่บล็อกเรียบร้อยแล้ว!' : 'บันทึกแบบร่างเรียบร้อยแล้ว!');
