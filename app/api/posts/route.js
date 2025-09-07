@@ -2,52 +2,50 @@ import { NextResponse } from 'next/server';
 import { getSupabaseClient } from '@/lib/supabaseClient';
 
 export async function GET() {
-  const supabase = getSupabaseClient();
-  const { data, error } = await supabase
-    .from('posts')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(100);
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  try {
+    const supabase = getSupabaseClient();
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(100);
+    if (error) throw error;
+    return NextResponse.json({ posts: data || [] });
+  } catch (e) {
+    return NextResponse.json({ error: String(e?.message || e) }, { status: 500 });
   }
-
-  return NextResponse.json({ posts: data || [] });
 }
 
 export async function POST(request) {
-  const supabase = getSupabaseClient();
-  const body = await request.json();
-  const { title, excerpt, content, author, image, category, tags, read_time } = body;
-
-  if (!title || !content || !author) {
-    return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+  try {
+    const supabase = getSupabaseClient();
+    const body = await request.json();
+    const { title, excerpt, content, author, image, category, tags, read_time } = body;
+    if (!title || !content || !author) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+    const { data, error } = await supabase
+      .from('posts')
+      .insert({
+        title,
+        excerpt,
+        content,
+        author,
+        image,
+        category,
+        tags,
+        read_time,
+        views: 0,
+        likes: 0,
+        comments_count: 0,
+      })
+      .select('*')
+      .single();
+    if (error) throw error;
+    return NextResponse.json({ post: data }, { status: 201 });
+  } catch (e) {
+    return NextResponse.json({ error: String(e?.message || e) }, { status: 500 });
   }
-
-  const { data, error } = await supabase
-    .from('posts')
-    .insert({
-      title,
-      excerpt,
-      content,
-      author,
-      image,
-      category,
-      tags,
-      read_time,
-      views: 0,
-      likes: 0,
-      comments_count: 0,
-    })
-    .select('*')
-    .single();
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-
-  return NextResponse.json({ post: data }, { status: 201 });
 }
 
 
