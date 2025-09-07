@@ -19,12 +19,17 @@ export default function BlogDetailPage({ params }) {
     (async () => {
       try {
         const res = await fetch(`/api/posts/${blogId}`);
-        const json = await res.json();
+        const text = await res.text();
+        const json = text ? JSON.parse(text) : {};
         if (res.ok) {
           setBlog(json.post);
           setLikes(json.post?.likes ?? 0);
+        } else {
+          console.error(json.error || 'Failed to load post');
         }
-      } catch {}
+      } catch (e) {
+        console.error('Load post error:', e);
+      }
     })();
   }, [resolvedParams.id]);
 

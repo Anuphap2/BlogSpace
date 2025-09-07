@@ -19,11 +19,16 @@ export default function BlogsPage() {
     (async () => {
       try {
         const res = await fetch('/api/posts');
-        const json = await res.json();
+        const text = await res.text();
+        const json = text ? JSON.parse(text) : {};
         if (res.ok) {
           setRemotePosts(json.posts || []);
+        } else {
+          console.error(json.error || 'Failed to load posts');
         }
-      } catch {}
+      } catch (e) {
+        console.error('Load posts error:', e);
+      }
     })();
   }, []);
 
